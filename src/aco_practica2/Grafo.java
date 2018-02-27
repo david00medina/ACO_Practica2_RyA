@@ -55,11 +55,8 @@ public class Grafo {
         System.out.println("MOSTRAR GRAFO");
         System.out.println("Nivel inicio: " + nivelInicio + " \nNivel final: " + nivelFinal);
         for (Arista arista : aristas) {
-            System.out.println("Nodo(" + (arista.getNivelActual()) + ", "
-                            + arista.getNodoInicial() + ") -- "
-                            + arista.getPeso() + " --> Nodo("
-                            + (arista.getNivelActual()+1) + ", "
-                            + arista.getNodoSiguiente() + ")");
+            System.out.println(arista.toString());
+            
         }
         System.out.println("");
     }
@@ -68,7 +65,25 @@ public class Grafo {
         return nNodos;
     }
     
+    
+    public int getNivelInicio() {
+        return nivelInicio;
+    }
+
+    public int getNivelFinal() {
+        return nivelFinal;
+    }
     public void setAristas(int nivel, int a, int b, int peso) {
         aristas.add(new Arista(nivel, a, b, peso));
+    }
+    
+    public ArrayList<Arista> expansion (int nivel){
+        ArrayList<Arista> expansion = new ArrayList<>();
+        int i = 0;
+         while(nivel == aristas.get(i).getNivelActual()){
+            expansion.add(aristas.get(i));
+            i++;
+        }
+         return expansion;
     }
 }

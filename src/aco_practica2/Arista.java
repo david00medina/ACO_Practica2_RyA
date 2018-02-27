@@ -45,4 +45,11 @@ public class Arista {
     public void setNivelActual(int nivelActual) {
         this.nivelActual = nivelActual;
     }
+    
+    public String toString(){
+        String temp = "";
+        temp += "Nodo(" + nivelActual + " , " + nodoInicial  + ") --- " + peso 
+                + " --> Nodo(" + (nivelActual+1) + " , " + nodoSiguiente + ")";
+        return temp;
+    }
 }
