@@ -80,7 +80,8 @@ public class Grafo {
     public ArrayList<Arista> expansion (int nivel){
         ArrayList<Arista> expansion = new ArrayList<>();
         int i = 0;
-         while(nivel == aristas.get(i).getNivelActual()){
+        aristas.
+        while(nivel == aristas.get(i).getNivelActual()){
             expansion.add(aristas.get(i));
             i++;
         }
