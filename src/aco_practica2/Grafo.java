@@ -58,7 +58,7 @@ public class Grafo {
             System.out.println(arista.toString());
             
         }
-        System.out.println("");
+        System.out.println("\n");
     }
 
     public int getnNodos() {
@@ -73,18 +73,8 @@ public class Grafo {
     public int getNivelFinal() {
         return nivelFinal;
     }
+    
     public void setAristas(int nivel, int a, int b, int peso) {
         aristas.add(new Arista(nivel, a, b, peso));
-    }
-    
-    public ArrayList<Arista> expansion (int nivel){
-        ArrayList<Arista> expansion = new ArrayList<>();
-        int i = 0;
-        aristas.
-        while(nivel == aristas.get(i).getNivelActual()){
-            expansion.add(aristas.get(i));
-            i++;
-        }
-         return expansion;
     }
 }

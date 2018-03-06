@@ -3,53 +3,85 @@ package aco_practica2;
 import java.util.ArrayList;
 
 public class RamificacionAcotacion {
-
     private Grafo grafo;
-    private ArrayList<Arista> solucionTemporal;
-    private ArrayList<Arista> solucion;
-    private ArrayList<Arista> nodosActivos;
+    private ArrayList<Arista> nodosVivos;
+    private ArrayList<Arista> nodosVisitados;
+    private int costeGlobal;
 
     public RamificacionAcotacion(Grafo gr) {
-
         grafo = gr;
-        solucionTemporal = new ArrayList<>();
-        solucion = new ArrayList<>();
-        nodosActivos = new ArrayList<>();
+        nodosVivos = new ArrayList<>();
+        nodosVisitados = new ArrayList<>();
     }
-
-    public void execRyA() {
-
-        // Tomar el nodo raiz
-        int nivelActivo = grafo.getNivelInicio();
-        // Ver sus nodos hijos (Nodos activos)
-        // Escoger el de menor peso (Nodos activos)
-
-        // Repetir hasta llegar al último nodo (Nodo activo final)
-        Arista menor;
-        while (nivelActivo < grafo.getNivelFinal()) {
-
-            nodosActivos = grafo.expansion(nivelActivo);
-            menor = nodosActivos.get(0);
-            for (Arista it : nodosActivos) {
-                //System.out.println(it);
-                if (menor.getPeso() > it.getPeso()) {
-                    menor = it;
+    
+    public ArrayList<Arista> execRyA() {
+        ArrayList<Arista> pathParcial = new ArrayList<>(); // No sé si lo usaré
+        ArrayList<Arista> path = new ArrayList<>();
+        int costeParcial = 0, nivelActual = 0;
+        int nodoActual = 1;
+        costeGlobal = Integer.MAX_VALUE;
+        nodosVivos = expansion(nivelActual, nodoActual);
+        while(nodosVivos.size() > 0) {
+            Arista menor = seleccion(nodosVivos, nivelActual, nodoActual);
+            
+            nodosVivos.remove(menor);
+            nodosVisitados.add(menor);
+            pathParcial.add(menor);
+            
+            nivelActual++;
+            nodoActual = menor.getNodoSiguiente();
+            
+            nodosVivos.addAll(expansion(nivelActual, nodoActual));
+            
+            if(nivelActual == grafo.getNivelFinal()) {
+                costeParcial = sumaCostes(pathParcial);
+                if(costeParcial < costeGlobal) {
+                    costeGlobal = costeParcial;
+                    path = (ArrayList)pathParcial.clone();
+                    for (Arista arista : path) {
+                        System.out.println(arista);
+                    }
+                    System.out.println(costeGlobal);
                 }
             }
-
-            solucionTemporal.add(menor);
-            nivelActivo++;
+            try{
+            System.in.read();
+            }catch(Exception e){};
         }
-        for (Arista it : solucionTemporal) {
-            System.out.println(it);
-        }
-        // Guardar la suma de pesos del camino
+        
+        return pathParcial;
+    }
+    
+    private ArrayList<Arista> expansion (int nivel, int nodoPadre){
+        ArrayList<Arista> expansion = new ArrayList<>();
 
-        // Repetir todo lo anterior
-        // Comparar suma de peso de iteración i-ésima con 
-        // la iteración con menor peso
-        // Quedarse con el camino de menor peso
-        // Devolver camino de menor peso
+        for (Arista arista : grafo.getAristas()) {
+            if(nivel == arista.getNivelActual() 
+                    && nodoPadre == arista.getNodoInicial()) {
+                expansion.add(arista);
+            }
+        }
+        return expansion;
     }
 
+    private Arista seleccion(ArrayList<Arista> nodosVivos, int nivelActual, int nodoActual) {
+        Arista menor = new Arista(0,0,0,Integer.MAX_VALUE);
+        for (Arista nodo : nodosVivos) {
+            if(nivelActual == nodo.getNivelActual() 
+                && nodoActual == nodo.getNodoInicial()
+                && menor.getPeso() > nodo.getPeso()) {
+                menor = nodo;
+            }
+        }
+        return menor;
+    }
+    
+    private int sumaCostes(ArrayList<Arista> path){
+        int temp = 0;
+        for (Arista it : path) {
+                temp += it.getPeso();
+            }
+            
+        return temp;
+    }
 }
